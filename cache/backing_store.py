@@ -7,6 +7,7 @@ class BackingStore:
         self.data=dict() # using dict as persistent storage
 
     def get(self, key):
+        print(f"** cache miss; fetching {key} from backing store **")
         return self.data.get(key)
 
     def put(self, key, value):
