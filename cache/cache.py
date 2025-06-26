@@ -1,8 +1,8 @@
-from cache.dll import DLL
-from cache.node import Node
+from dll import DLL
+from node import Node
 import time
 
-from cache.backing_store import BackingStore
+from backing_store import BackingStore
 
 
 class Cache:
