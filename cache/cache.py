@@ -1,6 +1,9 @@
-from dll import DLL
-from node import Node 
-import time 
+from cache.dll import DLL
+from cache.node import Node
+import time
+
+from cache.backing_store import BackingStore
+
 
 class Cache:
     def __init__(self, capacity, ttl_seconds):
@@ -8,6 +11,7 @@ class Cache:
         self.dll = DLL()
         self.capacity = capacity
         self.ttl_seconds = ttl_seconds
+        self.backing_store = BackingStore()
     
     
     
@@ -25,11 +29,14 @@ class Cache:
 
         node = self.hashmap.get(key)
         if not node:
-            # not found in-memory, call persistant storage
-            # node = fetchFromPersistantStore(key)  
-            # warm cache self.hashmap[key] = node 
-            # move node to front 
-            return    
+            # not found in-memory, call persistent storage
+            # node = fetchFromPersistantStore(key)
+            value = self.backing_store.get(key)
+            if not value:
+                return
+            # warm cache, let put() handle it.
+            self.put(key, value)
+            return value
 
         # TTL logic
         time_since_last_access = time.time() - node.last_access_time
@@ -38,7 +45,12 @@ class Cache:
             del self.hashmap[key]
             # remove node
             self.dll.remove_node(node)
-            return 
+            # check if backing store has the data
+            value = self.backing_store.get(key)
+            if not value: # not present in backing store as well
+                return
+            self.put(key, value) # if present in backing store -> warm cache
+            return value
 
                     
         # delete the node and add it to the start of dll (moving to front)
