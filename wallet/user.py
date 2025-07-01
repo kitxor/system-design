@@ -8,3 +8,6 @@ class User:
 
     def get_name(self):
         return self.name
+
+    def __str__(self):
+        return f"User object: <{self.id}: {self.name}>"

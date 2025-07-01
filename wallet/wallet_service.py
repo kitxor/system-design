@@ -1,6 +1,7 @@
 import random
 
-from wallet.transaction import Transaction
+from transaction import Transaction
+from wallet import Wallet
 
 
 class WalletService:
@@ -25,7 +26,7 @@ class WalletService:
 
     # to your own wallet
     def add_money(self, money, wallet_id):
-        wallet = self.wallet_repository.get_wallet(wallet_id)
+        wallet = self.wallet_repository.get_wallet_by_id(wallet_id)
         if wallet is None:
             return False
         if money > 0:
@@ -54,4 +55,8 @@ class WalletService:
         return False
 
     def get_wallet_transactions(self, wallet_id):
-        return self.transaction_repository.get_wallet_transactions(wallet_id)
+        return self.transaction_repository.get_wallet_transaction(wallet_id)
+
+    def create_wallet(self, user_id):
+        wallet = Wallet(random.randint(0,10000), "NORMAL", user_id, "ACTIVE", 0, 0)
+        return self.wallet_repository.create_wallet(wallet)

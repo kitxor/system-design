@@ -11,3 +11,7 @@ class Transaction:
 
     def get_source_wallet(self):
         return self.source_wallet_id
+
+    def __str__(self):
+        return (f"Transaction Object: <id: {self.id}, source wallet: {self.source_wallet_id}, "
+                f"destination wallet: {self.destination_wallet_id}, amount: {self.amount}, >")

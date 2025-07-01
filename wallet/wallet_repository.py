@@ -5,5 +5,6 @@ class WalletRepository:
     def get_wallet_by_id(self, wallet_id):
         return self.wallets.get(wallet_id)
 
-    def save_wallet(self, wallet):
+    def create_wallet(self, wallet):
         self.wallets[wallet.id] = wallet
+        return wallet
